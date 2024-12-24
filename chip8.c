@@ -59,7 +59,7 @@ bool init_chip8(chip8_t *chip8, const char rom_name[]) {
     rewind(rom);
 
     if (rom_size > max_size) {
-        SDL_Log("Rom file %s is too big! Rom size: %Iu, Max size allowed: %Iu\n", 
+        SDL_Log("Rom file %s is too big! Rom size: %Ilu, Max size allowed: %Ilu\n", 
                 rom_name, rom_size, max_size);
         return false;
     }
@@ -80,3 +80,28 @@ bool init_chip8(chip8_t *chip8, const char rom_name[]) {
     return true;
 }
 
+// Emulate 1 CHIP8 instruction
+void emulate_instruction(chip8_t *chip8) {
+    // Get next opcode from ram
+    chip8->inst.opcode = (chip8->ram[chip8->PC] << 8) | chip8->ram[chip8->PC + 1];
+    chip8->PC += 2;   // Pre increment program counter for next opcode
+    
+    // Instruction format
+    chip8->inst.NNN = chip8->inst.opcode & 0x0FFF;
+    chip8->inst.NN  = chip8->inst.opcode & 0x0FF;
+    chip8->inst.N   = chip8->inst.opcode & 0x0F;
+    chip8->inst.X   = (chip8->inst.opcode >> 8) & 0x0F;
+    chip8->inst.Y   = (chip8->inst.opcode >> 4) & 0x0F;   
+   
+    // Emulate opcode
+    switch (chip8->inst.opcode) {
+        case 0x0:
+            if (chip8->inst.NN == 0xE0) {
+                
+                // 0x00E0: Clear the screen
+                
+            }
+        default:
+          break; // Unimplemented or invalid opcode
+    }
+}
