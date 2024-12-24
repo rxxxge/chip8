@@ -59,7 +59,7 @@ bool init_chip8(chip8_t *chip8, const char rom_name[]) {
     rewind(rom);
 
     if (rom_size > max_size) {
-        SDL_Log("Rom file %s is too big! Rom size: %Ilu, Max size allowed: %Ilu\n", 
+        SDL_Log("Rom file %s is too big! Rom size: %"PRIuPTR" size allowed: %"PRIuPTR"\n", 
                 rom_name, rom_size, max_size);
         return false;
     }
